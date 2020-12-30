@@ -54,9 +54,9 @@ func (c *DefaultClient) GetPipelineInstance(name string, counter int) (*Pipeline
 // Note that te history is listed in reverse chronological order meaning the
 // setting an offset to 1 will skip the last run of the pipeline and will give
 // you a page of pipeline runs history which is 10 by default.
-func (c *DefaultClient) GetPipelineHistoryPage(name string, offset int) (*PipelineHistoryPage, error) {
+func (c *DefaultClient) GetPipelineHistoryPage(name string) (*PipelineHistoryPage, error) {
 	res := new(PipelineHistoryPage)
-	err := c.getJSON(fmt.Sprintf("/go/api/pipelines/%s/history/%d", name, offset), nil, res)
+	err := c.getJSON(fmt.Sprintf("/go/api/pipelines/%s/history", name), nil, res)
 	return res, err
 }
 
