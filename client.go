@@ -16,7 +16,7 @@ type Client interface {
 
 	// Pipelines API
 	GetPipelineInstance(string, int) (*PipelineInstance, error)
-	GetPipelineHistoryPage(string, int) (*PipelineHistoryPage, error)
+	GetPipelineHistoryPage(string) (*PipelineHistoryPage, error)
 	GetPipelineStatus(string) (*PipelineStatus, error)
 	PausePipeline(string, string) (*SimpleMessage, error)
 	UnpausePipeline(string) (*SimpleMessage, error)

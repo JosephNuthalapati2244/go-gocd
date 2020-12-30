@@ -37,7 +37,7 @@ func TestGetPipelineHistoryPage(t *testing.T) {
 	client, server := newTestAPIClient("/go/api/pipelines/pipeline1/history/0", serveFileAsJSON(t, "GET", "test-fixtures/get_pipeline_history_page.json", 0, DummyRequestBodyValidator))
 	defer server.Close()
 
-	history, err := client.GetPipelineHistoryPage("pipeline1", 0)
+	history, err := client.GetPipelineHistoryPage("pipeline1")
 	assert.Equal(t, 2, len(history.Pipelines))
 	assert.NoError(t, err)
 	assert.Equal(t, 0, history.Pagination.Offset)
