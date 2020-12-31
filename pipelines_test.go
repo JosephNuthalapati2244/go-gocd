@@ -40,9 +40,6 @@ func TestGetPipelineHistoryPage(t *testing.T) {
 	history, err := client.GetPipelineHistoryPage("pipeline1")
 	assert.Equal(t, 2, len(history.Pipelines))
 	assert.NoError(t, err)
-	assert.Equal(t, 0, history.Pagination.Offset)
-	assert.Equal(t, 2, history.Pagination.Total)
-	assert.Equal(t, 10, history.Pagination.PageSize)
 	pipeline := history.Pipelines[1]
 	assert.NotNil(t, pipeline)
 	assert.Equal(t, "pipeline1", pipeline.Name)

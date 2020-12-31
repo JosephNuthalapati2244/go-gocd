@@ -28,8 +28,7 @@ type PipelineBuildCause struct {
 
 // PipelineHistoryPage represents a page of the history of run of a pipeline
 type PipelineHistoryPage struct {
-	Pipelines  []PipelineInstance `json:"pipelines"`
-	Pagination Pagination         `json:"pagination"`
+	Pipelines []PipelineInstance `json:"pipelines"`
 }
 
 // PipelineStatus represents the status of a pipeline
