@@ -3,7 +3,7 @@ package gocd_test
 import (
 	"fmt"
 
-	"github.com/ashwanthkumar/go-gocd"
+	"github.com/JosephNuthalapati2244/go-gocd"
 )
 
 // ExampleDefaultClient_GetPipelineInstance displays an instance of a pipeline
@@ -34,7 +34,7 @@ func ExampleDefaultClient_GetPipelineHistoryPage() {
 	offset := 2      // we ignore the 2 last pipeline runs
 	iterations := 15 // We want to stop iterating after we displayed 15 pipelines
 	for {
-		h, err := client.GetPipelineHistoryPage("my-pipeline-name", offset)
+		h, err := client.GetPipelineHistoryPage("my-pipeline-name")
 		if err != nil {
 			fmt.Println(err)
 			return
