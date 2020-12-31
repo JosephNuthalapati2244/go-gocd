@@ -28,7 +28,17 @@ type PipelineBuildCause struct {
 
 // PipelineHistoryPage represents a page of the history of run of a pipeline
 type PipelineHistoryPage struct {
+	Links     Links              `json:"_links"`
 	Pipelines []PipelineInstance `json:"pipelines"`
+}
+
+type Links struct {
+	Previous Link `json:"previous"`
+	Next     Link `json:"next"`
+}
+
+type Link struct {
+	Href string `json:"href"`
 }
 
 // PipelineStatus represents the status of a pipeline
