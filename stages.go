@@ -2,7 +2,6 @@ package gocd
 
 // StageRun represent a stage run history event
 type StageRun struct {
-	ID                int    `json:"id"`
 	Name              string `json:"name"`
 	ApprovedBy        string `json:"approved_by"`
 	Jobs              []Job  `json:"jobs"`
@@ -13,4 +12,5 @@ type StageRun struct {
 	OperatePermission bool   `json:"operate_permission"`
 	RerunOfCounter    bool   `json:"rerun_of_counter"`
 	Scheduled         bool   `json:"scheduled"`
+	Status            bool   `json:"status"`
 }

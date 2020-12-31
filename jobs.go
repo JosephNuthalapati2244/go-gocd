@@ -10,7 +10,6 @@ import (
 
 // Job definition used also by other elements like the pipeline and stages
 type Job struct {
-	ID            int    `json:"id"`
 	Name          string `json:"name"`
 	Result        string `json:"result"`
 	State         string `json:"state"`

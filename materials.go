@@ -2,7 +2,7 @@ package gocd
 
 // Material represents a material (Can be Git, Mercurial, Perforce, Subversion, Tfs, Pipeline, SCM)
 type Material struct {
-	ID          int    `json:"id"`
+	Name        string `json:"name"`
 	Type        string `json:"type"`
 	Description string `json:"description"`
 	Fingerprint string `json:"fingerprint"`
@@ -10,7 +10,6 @@ type Material struct {
 
 // MaterialModification represents a modification done on a material configuration
 type MaterialModification struct {
-	ID           int    `json:"id"`
 	ModifiedTime int64  `json:"modified_time"`
 	UserName     string `json:"user_name"`
 	EmailAddress string `json:"email_address"`

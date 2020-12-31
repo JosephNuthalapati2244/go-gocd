@@ -6,7 +6,6 @@ import (
 
 // PipelineInstance represents a pipeline instance (for a given run)
 type PipelineInstance struct {
-	ID                  int                `json:"id"`
 	Name                string             `json:"name"`
 	Label               string             `json:"label"`
 	NaturalOrder        float32            `json:"natural_order"`
@@ -16,6 +15,7 @@ type PipelineInstance struct {
 	PreparingToSchedule bool               `json:"preparing_to_schedule"`
 	Stages              []StageRun         `json:"stages"`
 	BuildCause          PipelineBuildCause `json:"build_cause"`
+	ScheduledDate       string             `json:"scheduled_date"`
 }
 
 // PipelineBuildCause represent what triggered the build of the pipeline
