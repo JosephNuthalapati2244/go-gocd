@@ -34,7 +34,6 @@ func (c *DefaultClient) resolve(resource string) string {
 // err := c.getJSON(fmt.Sprintf("/go/api/pipelines/%s/history/%d", name, offset), map[string]string{"Accept": "application/vnd.go.cd.v2+json"}, res)
 func (c *DefaultClient) getJSON(url string, headers map[string]string, out interface{}) error {
 	var errors *multierror.Error
-	c.Request.Header.Add("Accept", "application/vnd.go.cd.v1+json")
 
 	req := c.Request.Get(c.resolve(url))
 	for k, v := range headers {

@@ -65,7 +65,7 @@ func (c *DefaultClient) GetPipelineInstance(name string, counter int) (*Pipeline
 // you a page of pipeline runs history which is 10 by default.
 func (c *DefaultClient) GetPipelineHistoryPage(name string) (*PipelineHistoryPage, error) {
 	res := new(PipelineHistoryPage)
-	err := c.getJSON(fmt.Sprintf("/go/api/pipelines/%s/history", name), nil, res)
+	err := c.getJSON(fmt.Sprintf("/go/api/pipelines/%s/history", name), map[string]string{"Accept": "application/vnd.go.cd.v1+json"}, res)
 	return res, err
 }
 
