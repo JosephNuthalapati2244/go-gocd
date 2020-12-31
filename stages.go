@@ -12,5 +12,5 @@ type StageRun struct {
 	OperatePermission bool   `json:"operate_permission"`
 	RerunOfCounter    bool   `json:"rerun_of_counter"`
 	Scheduled         bool   `json:"scheduled"`
-	Status            bool   `json:"status"`
+	Status            string `json:"status"`
 }
