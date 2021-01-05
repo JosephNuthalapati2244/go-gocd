@@ -54,7 +54,7 @@ type PipelineStatus struct {
 // pipeline name and counter
 func (c *DefaultClient) GetPipelineInstance(name string, counter int) (*PipelineInstance, error) {
 	res := new(PipelineInstance)
-	err := c.getJSON(fmt.Sprintf("/go/api/pipelines/%s/instance/%d", name, counter), nil, res)
+	err := c.getJSON(fmt.Sprintf("/go/api/pipelines/%s/instance/%d", name, counter), map[string]string{"Accept": "application/vnd.go.cd.v1+json"}, res)
 	return res, err
 }
 
