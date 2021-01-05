@@ -12,7 +12,7 @@ type Client interface {
 	AgentRunJobHistory(uuid string, offset int) (*JobRunHistory, error)
 
 	// Pipeline Groups API
-	GetPipelineGroups() ([]*PipelineGroup, error)
+	GetPipelineGroups() ([]PipelineGroup, error)
 
 	// Pipelines API
 	GetPipelineInstance(string, int) (*PipelineInstance, error)

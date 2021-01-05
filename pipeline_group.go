@@ -1,75 +1,60 @@
 package gocd
 
 import (
-	"encoding/json"
-
-	multierror "github.com/hashicorp/go-multierror"
+	"github.com/hashicorp/go-multierror"
 )
 
-// Pipeline Object
-type Pipeline struct {
-	Name      string     `json:"name,omitempty"`
-	Label     string     `json:"label,omitempty"`
-	Materials []Material `json:"materials,omitempty"`
-	Stages    []string   `json:"stages,omitempty"`
+type PGPipeline struct {
+	Name  string  `json:"name,omitempty"`
+	Links PGLinks `json:"_links"`
 }
 
-// PipelineGroup Object
+type Authorization struct {
+	View   Permissions `json:"view"`
+	Admins Permissions `json:"admins"`
+}
+
+type Permissions struct {
+	Users []string `json:"users"`
+	Roles []string `json:"roles"`
+}
+
 type PipelineGroup struct {
-	Name      string     `json:"name,omitempty"`
-	Pipelines []Pipeline `json:"pipelines,omitempty"`
+	Links         PGLinks       `json:"_links"`
+	Name          string        `json:"name,omitempty"`
+	Pipelines     []PGPipeline  `json:"pipelines,omitempty"`
+	Authorization Authorization `json:"authorization"`
+}
+
+type PGResponse struct {
+	Links    PGLinks    `json:"_links"`
+	Embedded PGEmbedded `json:"_embedded"`
+}
+
+type PGEmbedded struct {
+	Groups []PipelineGroup `json:"groups"`
+}
+
+type PGLinks struct {
+	Self Link `json:"self"`
+	Doc  Link `json:"doc"`
+	Find Link `json:"find"`
 }
 
 // GetPipelineGroups List pipeline groups along with the pipelines, stages and materials for each pipeline.
-func (c *DefaultClient) GetPipelineGroups() ([]*PipelineGroup, error) {
+func (c *DefaultClient) GetPipelineGroups() ([]PipelineGroup, error) {
 	var errors *multierror.Error
 
-	// Somehow GoCD will return "The resource you requested was not found!" if you specify an Accept header
-	_, body, errs := c.Request.
-		Get(c.resolve("/go/api/admin/pipeline_groups")).
-		Set("Accept", "application/vnd.go.cd.v1+json").
-		End()
+	var res PGResponse
+	err := c.getJSON("/go/api/admin/pipeline_groups", map[string]string{"Accept": "application/vnd.go.cd.v1+json"}, &res)
 
-	if errs != nil {
-		errors = multierror.Append(errors, errs...)
-		return []*PipelineGroup{}, errors.ErrorOrNil()
+	if err != nil {
+		errors = multierror.Append(errors, err)
+		return []PipelineGroup{}, errors.ErrorOrNil()
 	}
 
-	// first parse the json into temporary structure, so we parse stages object
-	// with a single name string attribute as simple string
-	type tmpStage struct {
-		Name string `json:"name,omitempty"`
-	}
-	type tmpPipeline struct {
-		Name      string     `json:"name,omitempty"`
-		Label     string     `json:"label,omitempty"`
-		Materials []Material `json:"materials,omitempty"`
-		Stages    []tmpStage `json:"stages,omitempty"`
-	}
+	groups := res.Embedded.Groups
 
-	type tmpPipelineGroup struct {
-		Name      string        `json:"name,omitempty"`
-		Pipelines []tmpPipeline `json:"pipelines,omitempty"`
-	}
-	var tmpPipelineGroups []tmpPipelineGroup
+	return groups, errors
 
-	jsonErr := json.Unmarshal([]byte(body), &tmpPipelineGroups)
-	if jsonErr != nil {
-		errors = multierror.Append(errors, jsonErr)
-		return []*PipelineGroup{}, errors.ErrorOrNil()
-	}
-	// create the good pipeline groups structures and copy data from the temporary structs
-	pipelineGroups := make([]*PipelineGroup, len(tmpPipelineGroups))
-	for i, pg := range tmpPipelineGroups {
-		pipelineGroups[i] = &PipelineGroup{Name: pg.Name}
-		pipelineGroups[i].Pipelines = make([]Pipeline, len(pg.Pipelines))
-		for j, p := range pg.Pipelines {
-			pipelineGroups[i].Pipelines[j] = Pipeline{Name: p.Name, Label: p.Label, Materials: p.Materials, Stages: make([]string, len(p.Stages))}
-			for k, s := range p.Stages {
-				pipelineGroups[i].Pipelines[j].Stages[k] = s.Name
-			}
-		}
-
-	}
-	return pipelineGroups, errors.ErrorOrNil()
 }
