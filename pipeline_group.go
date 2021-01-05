@@ -1,9 +1,5 @@
 package gocd
 
-import (
-	"github.com/hashicorp/go-multierror"
-)
-
 type PGPipeline struct {
 	Name  string  `json:"name,omitempty"`
 	Links PGLinks `json:"_links"`
@@ -43,18 +39,16 @@ type PGLinks struct {
 
 // GetPipelineGroups List pipeline groups along with the pipelines, stages and materials for each pipeline.
 func (c *DefaultClient) GetPipelineGroups() ([]PipelineGroup, error) {
-	var errors *multierror.Error
 
 	var res PGResponse
 	err := c.getJSON("/go/api/admin/pipeline_groups", map[string]string{"Accept": "application/vnd.go.cd.v1+json"}, &res)
 
 	if err != nil {
-		errors = multierror.Append(errors, err)
-		return []PipelineGroup{}, errors.ErrorOrNil()
+		return []PipelineGroup{}, err
 	}
 
 	groups := res.Embedded.Groups
 
-	return groups, errors
+	return groups, nil
 
 }
