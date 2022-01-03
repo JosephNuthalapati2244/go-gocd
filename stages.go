@@ -8,7 +8,7 @@ type StageRun struct {
 	CanRun            bool   `json:"can_run"`
 	Result            string `json:"result"`
 	ApprovalType      string `json:"approval_type"`
-	Counter           string `json:"counter"`
+	Counter           int    `json:"counter"`
 	OperatePermission bool   `json:"operate_permission"`
 	RerunOfCounter    bool   `json:"rerun_of_counter"`
 	Scheduled         bool   `json:"scheduled"`
